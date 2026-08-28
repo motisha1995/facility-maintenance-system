@@ -1,0 +1,75 @@
+@model List<string>
+@{
+    ViewBag.Title = "Maintenance Reports & Analytics";
+}
+
+<div class="page-header">
+    <h2>Reports & Analytics Dashboard</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Generate Report</h4>
+            </div>
+            <div class="panel-body">
+                <div class="btn-group" role="group">
+                    <a href="@Url.Action("MonthlyReport", "Reporting")" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-calendar"></span> Monthly Report
+                    </a>
+                    <a href="@Url.Action("QuarterlyReport", "Reporting")" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-th"></span> Quarterly Report
+                    </a>
+                    <a href="@Url.Action("YearlyReport", "Reporting")" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-signal"></span> Yearly Report
+                    </a>
+                    <a href="@Url.Action("CustomReport", "Reporting")" class="btn btn-info">
+                        <span class="glyphicon glyphicon-list"></span> Custom Report
+                    </a>
+                    <a href="@Url.Action("ReportHistory", "Reporting")" class="btn btn-default">
+                        <span class="glyphicon glyphicon-time"></span> Report History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Key Insights</h4>
+            </div>
+            <div class="panel-body">
+                <p><strong>Total Completed Requests:</strong> <span style="color: #27ae60; font-size: 18px; font-weight: bold;">@ViewBag.TotalCompleted</span></p>
+                <p><strong>Average Resolution Time:</strong> <span style="color: #3498db; font-size: 18px; font-weight: bold;">@ViewBag.AverageResolutionTime hours</span></p>
+                <p><strong>Total Open Requests:</strong> <span style="color: #f39c12; font-size: 18px; font-weight: bold;">@ViewBag.TotalOpen</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Recommendations for Improvement</h4>
+            </div>
+            <div class="panel-body">
+                @if (Model != null && Model.Count > 0)
+                {
+                    <ul style="padding-left: 20px;">
+                        @foreach (var rec in Model)
+                        {
+                            <li style="margin-bottom: 10px;">@rec</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Maintenance operations are performing optimally.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

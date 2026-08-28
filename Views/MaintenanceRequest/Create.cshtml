@@ -1,0 +1,66 @@
+@model FacilityMaintenanceSystem.Models.MaintenanceRequest
+@{
+    ViewBag.Title = "Submit Maintenance Request";
+}
+
+<div class="page-header">
+    <h2>Submit New Maintenance Request</h2>
+</div>
+
+@using (Html.BeginForm("Create", "MaintenanceRequest", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Brief description of the issue" })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 5, placeholder = "Detailed description of the maintenance issue" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationId, "Location", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.LocationId, (SelectList)ViewBag.Locations, "-- Select Location --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IssueTypeId, "Issue Type", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IssueTypeId, (SelectList)ViewBag.IssueTypes, "-- Select Issue Type --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IssueTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Urgency, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Urgency, (SelectList)ViewBag.UrgencyLevels, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Urgency, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary" style="width: 150px;">
+                    <span class="glyphicon glyphicon-ok"></span> Submit Request
+                </button>
+                @Html.ActionLink("Cancel", "Index", "MaintenanceRequest", null, new { @class = "btn btn-default", style = "width: 150px; margin-left: 10px;" })
+            </div>
+        </div>
+    </div>
+}

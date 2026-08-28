@@ -1,0 +1,65 @@
+@model FacilityMaintenanceSystem.Models.MaintenanceRequest
+@{
+    ViewBag.Title = "Review Request - " + Model.TrackingId;
+}
+
+<div class="page-header">
+    <h2>Review Request: @Model.TrackingId</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Request Details</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Title:</strong> @Model.Title</p>
+                        <p><strong>Requested By:</strong> @Model.Employee.FirstName @Model.Employee.LastName</p>
+                        <p><strong>Location:</strong> @Model.Location.FullLocation</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Issue Type:</strong> @Model.IssueType.TypeName</p>
+                        <p><strong>Urgency:</strong> <span class="urgency-badge urgency-@Model.Urgency.ToLower()">@Model.Urgency</span></p>
+                        <p><strong>Created:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+                    </div>
+                </div>
+                <hr />
+                <h5>Description</h5>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h4 class="panel-title">Approval Decision</h4>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Approve", "Approval", new { id = Model.RequestId }, FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <label>Comments (Optional):</label>
+                        <textarea class="form-control" name="comments" rows="3" placeholder="Add comments for the requester"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block" style="margin-bottom: 10px;">
+                        <span class="glyphicon glyphicon-ok"></span> Approve Request
+                    </button>
+                }
+                @using (Html.BeginForm("Reject", "Approval", new { id = Model.RequestId }, FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <label>Rejection Reason:</label>
+                        <textarea class="form-control" name="comments" rows="3" placeholder="Explain why this request is being rejected" required="required"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-block">
+                        <span class="glyphicon glyphicon-remove"></span> Reject Request
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

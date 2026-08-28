@@ -1,0 +1,92 @@
+@model FacilityMaintenanceSystem.Models.MaintenanceRequest
+@{
+    ViewBag.Title = "Request Details - " + Model.TrackingId;
+}
+
+<div class="page-header">
+    <h2>@Model.TrackingId - @Model.Title</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Request Information</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Tracking ID:</strong> @Model.TrackingId</p>
+                        <p><strong>Location:</strong> @Model.Location.FullLocation</p>
+                        <p><strong>Issue Type:</strong> @Model.IssueType.TypeName</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Status:</strong> <span class="status-badge status-@Model.Status.ToLower().Replace(" ", """>@Model.Status</span></p>
+                        <p><strong>Urgency:</strong> <span class="urgency-badge urgency-@Model.Urgency.ToLower()">@Model.Urgency</span></p>
+                        <p><strong>Created:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+                    </div>
+                </div>
+                <hr />
+                <h5>Description</h5>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+
+        @if (Model.Attachments != null && Model.Attachments.Count > 0)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Attachments</h4>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        @foreach (var attachment in Model.Attachments)
+                        {
+                            <li>@attachment.FileName (@attachment.FileType)</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Actions</h4>
+            </div>
+            <div class="panel-body">
+                @if (Model.Status == "Initiated")
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.RequestId }, new { @class = "btn btn-warning btn-block" })
+                }
+                @if (Model.Status == "Completed")
+                {
+                    @Html.ActionLink("Provide Feedback", "Survey", "Feedback", new { id = Model.RequestId }, new { @class = "btn btn-success btn-block" })
+                }
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Workflow Timeline</h4>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <h5 class="list-group-item-heading">Step 1: Request Initiated</h5>
+                        <p class="list-group-item-text text-muted">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+                    </div>
+                    <div class="list-group-item">
+                        <h5 class="list-group-item-heading">Step 2: Approval</h5>
+                        <p class="list-group-item-text text-muted">@(Model.Status != "Initiated" ? "Completed" : "Pending")</p>
+                    </div>
+                    <div class="list-group-item">
+                        <h5 class="list-group-item-heading">Step 3-9: Processing</h5>
+                        <p class="list-group-item-text text-muted">Current Status: @Model.Status</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
